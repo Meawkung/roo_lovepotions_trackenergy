@@ -202,6 +202,30 @@ hr {
     /* No line for the last item */
 }
 
+/* --- **** เพิ่มสไตล์ Probability Area **** --- */
+.probability-area {
+    margin-top: 20px;
+}
+
+#probability-display ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 5px;
+}
+
+#probability-display li {
+    margin-bottom: 4px;
+    font-size: 0.95em; /* ปรับขนาดตามต้องการ */
+    color: #333; /* สีตัวอักษร */
+}
+
+#probability-display p { /* สไตล์สำหรับข้อความ "ยังไม่มีข้อมูล" */
+    font-style: italic;
+    color: #666;
+    text-align: center;
+}
+/* --- ********************************** --- */
+
 /* --- Responsive Styles --- */
 
 /* Medium screens (Tablets) */
