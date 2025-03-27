@@ -63,13 +63,23 @@ hr { /* Horizontal lines within tracker */
 
 /* Display Area */
 .display-area p {
-    margin: 8px 0;
-    font-size: 1.1em;
+    margin: 10px 0;
+    font-size: 1.2em;
     text-align: center; /* Center round/energy */
 }
 .display-area span {
     font-weight: bold;
-    color: #d63384;
+    color: #c72c71; /* อาจจะปรับสีให้เข้มขึ้นเล็กน้อย */
+    font-size: 1.8em; /* << เพิ่มขนาด font ให้ใหญ่ขึ้นมาก */
+    padding: 2px 8px; /* เพิ่ม padding เล็กน้อย */
+    background-color: #f0f0f0; /* เพิ่มพื้นหลังสีเทาอ่อน */
+    border-radius: 5px; /* ทำให้มุมมน */
+    border: 1px solid #ddd; /* เพิ่มเส้นขอบบางๆ */
+    /* เพิ่มเงาเล็กน้อย */
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    /* จัดตำแหน่งแนวตั้งให้ดูดีขึ้น (ถ้า font ใหญ่มาก) */
+    vertical-align: middle;
+    line-height: 1.2; /* ปรับ line-height */
 }
 
 /* Status Message */
@@ -170,6 +180,53 @@ hr { /* Horizontal lines within tracker */
 }
 .info-column hr { display: none; } /* Hide hr within info-column */
 
+/* --- **** เพิ่มสไตล์ Conditional Probability Area **** --- */
+.conditional-probability-area {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.conditional-probability-area h4 { /* ใช้ h4 สำหรับหัวข้อย่อย */
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #666;
+    font-size: 0.95em;
+    font-weight: normal;
+}
+.conditional-probability-area h4 span { /* เน้นตัวเลข Energy */
+    font-weight: bold;
+    color: #c72c71;
+}
+
+#conditional-probability-display ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 5px;
+}
+
+#conditional-probability-display li {
+    margin-bottom: 4px;
+    font-size: 0.9em; /* อาจจะเล็กกว่า global probability */
+    color: #444;
+}
+#conditional-probability-display li strong {
+    color: #000; /* ทำให้ % เด่นขึ้น */
+}
+
+#conditional-probability-display p { /* สไตล์สำหรับ "ไม่มีข้อมูล" */
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    font-size: 0.9em;
+}
+/* --- **************************************** --- */
+
 /* Headings within info-column */
 .info-column h3 {
     color: #5a2a88;
@@ -269,6 +326,14 @@ hr { /* Horizontal lines within tracker */
      #history-log { max-height: 150px; } /* Adjust history height */
      #probability-display li, #history-log { font-size: 0.9em; } /* Slightly smaller fonts */
      .info-column h3 { font-size: 1em; }
+
+     .display-area span {
+        font-size: 1.5em; /* ลดขนาดลงเล็กน้อยบน mobile */
+        padding: 1px 6px;
+    }
+
+    .conditional-probability-area h4 { font-size: 0.9em; }
+     #conditional-probability-display li { font-size: 0.85em; }
 }
 
 /* Extra small screens */

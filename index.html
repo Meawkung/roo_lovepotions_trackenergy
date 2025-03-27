@@ -50,8 +50,6 @@
                 <ul id="history-log"></ul>
             </div>
 
-            <hr>
-
             <div class="probability-area">
                  <h3>โอกาสเล่นครั้งถัดไป (สถิติรวม)</h3>
                  <div id="probability-display"></div>
@@ -59,6 +57,13 @@
                     <button id="clear-stats-button">เคลียร์สถิติ</button>
                  </div>
             </div>
+
+            <div class="conditional-probability-area">
+                <h4>เมื่อมี <span id="conditional-energy-value">?</span> Energy:</h4> <!-- แสดง Energy ปัจจุบันที่ใช้คำนวณ -->
+                <div id="conditional-probability-display">
+                   <!-- Conditional probability data goes here -->
+                </div>
+           </div>
         </div>
         <!-- **** จบคอลัมน์ขวา **** -->
 
@@ -66,7 +71,7 @@
     <!-- **** จบ Container หลัก **** -->
 
 
-    <script src="love-potion-tracker.js"></script>
+    <script type="module" src="js/main.js"></script>
 
 </body>
 </html>
