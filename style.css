@@ -1,0 +1,287 @@
+/* --- General Styles --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- Tracker Container --- */
+.tracker {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 100%;
+    /* เพิ่ม max-width สำหรับ Desktop เพื่อรองรับปุ่มที่ใหญ่ขึ้น */
+    max-width: 550px; /* << ปรับค่านี้ตามความเหมาะสม */
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+h2,
+h3 {
+    color: #5a2a88;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-top: 0;
+    text-align: center; /* จัดกลางหัวข้อ */
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
+
+/* --- Display Area --- */
+.display-area p {
+    margin: 8px 0;
+    font-size: 1.1em;
+}
+
+.display-area span {
+    font-weight: bold;
+    color: #d63384;
+    /* Highlight color for values */
+}
+
+/* --- Status Message --- */
+#status-message {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-style: italic;
+    color: #666;
+    min-height: 1.5em;
+    /* Reserve space */
+    background-color: #e9ecef;
+    /* Light background */
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* --- Card Selection Area --- */
+.card-selection {
+    display: flex;
+    flex-wrap: wrap;
+    /* อาจจะเพิ่ม gap เล็กน้อยถ้าปุ่มใหญ่ขึ้น */
+    gap: 12px; /* << ปรับค่านี้ตามความเหมาะสม */
+    justify-content: center;
+}
+
+.card-selection button {
+    padding: 5px; /* padding อาจจะเท่าเดิม */
+    cursor: pointer;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    transition: background-color 0.2s, border-color 0.2s;
+    /* **** ขนาดเริ่มต้นที่ใหญ่ขึ้นสำหรับ Desktop **** */
+    width: 100px;  /* << ปรับความกว้างตามต้องการ */
+    height: 140px; /* << ปรับความสูงตามต้องการ */
+    /* ****************************************** */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* --- ใหม่: จัดการรูปภาพภายในปุ่ม --- */
+.card-selection button img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.card-selection button:hover:not(:disabled) {
+    background-color: #e2e6ea;
+    border-color: #aaa;
+}
+
+.card-selection button.selected {
+    border-color: #5a2a88;
+    background-color: #e0d0f0;
+    box-shadow: 0 0 5px #5a2a88;
+}
+
+.card-selection button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+
+/* --- Controls Area --- */
+.controls {
+    text-align: center;
+    /* Center buttons */
+    margin-top: 20px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    margin: 5px; /* ปรับ margin ให้รองรับการขึ้นบรรทัดใหม่ */
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: background-color 0.2s;
+}
+
+#next-round-button {
+    background-color: #5a2a88;
+    /* Theme color */
+    color: white;
+}
+
+#next-round-button:disabled {
+    background-color: #a893bd;
+    cursor: not-allowed;
+}
+
+#next-round-button:hover:not(:disabled) {
+    background-color: #48226b;
+}
+
+#reset-button {
+    background-color: #6c757d;
+    /* Secondary color */
+    color: white;
+}
+
+#reset-button:hover {
+    background-color: #5a6268;
+}
+
+
+/* --- History Area --- */
+.history-area {
+    margin-top: 20px;
+}
+
+#history-log {
+    list-style-type: none;
+    /* Remove bullet points */
+    padding-left: 0;
+    /* Remove default padding */
+    max-height: 150px;
+    /* Limit height */
+    overflow-y: auto;
+    /* Add scrollbar if needed */
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    font-size: 0.9em;
+    /* Slightly smaller font */
+}
+
+#history-log li {
+    margin-bottom: 5px;
+    /* Space between entries */
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #ddd;
+    /* Separator line */
+}
+
+#history-log li:last-child {
+    border-bottom: none;
+    /* No line for the last item */
+}
+
+/* --- Responsive Styles --- */
+
+/* Medium screens (Tablets) */
+@media (max-width: 768px) {
+    .tracker {
+        max-width: 90%; /* ทำให้กว้างขึ้นบน Tablet */
+    }
+
+    .card-selection {
+        gap: 10px; /* ลด gap ลงเล็กน้อย */
+    }
+
+    .card-selection button {
+        /* ขนาดสำหรับ Tablet (ใหญ่กว่าเดิม) */
+        width: 90px;   /* << ปรับตามความเหมาะสม */
+        height: 125px; /* << ปรับตามความเหมาะสม */
+    }
+}
+
+
+/* Small screens (Phones) */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .tracker {
+        max-width: 95%;
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+     /* Font size อาจจะคงเดิมหรือปรับเล็กน้อย */
+     .display-area p,
+     .controls button,
+     #history-log,
+     #status-message {
+         font-size: 1em; /* ลองปรับกลับเป็น 1em หรือ 0.95em */
+     }
+
+    .card-selection {
+        gap: 8px;
+    }
+
+    .card-selection button {
+        /* ขนาดสำหรับ Mobile (ใหญ่กว่าเดิม) */
+        width: 75px;  /* << ปรับตามความเหมาะสม */
+        height: 105px; /* << ปรับตามความเหมาะสม */
+        padding: 3px;
+    }
+
+    .controls {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 10px;
+    }
+    .controls button {
+        width: 70%;
+        max-width: 220px; /* เพิ่ม max-width ปุ่มควบคุม */
+        margin: 0;
+        font-size: 1em; /* ทำให้ font ปุ่มใหญ่ขึ้นบน mobile */
+    }
+
+    #history-log {
+        max-height: 120px; /* อาจจะเพิ่มความสูง history เล็กน้อย */
+    }
+}
+
+/* Extra small screens (Optional) */
+@media (max-width: 380px) { /* ปรับ breakpoint เล็กน้อย */
+    .card-selection button {
+         /* ขนาดสำหรับจอเล็กมากๆ (ใหญ่กว่าเดิม) */
+        width: 65px;   /* << ปรับตามความเหมาะสม */
+        height: 90px;  /* << ปรับตามความเหมาะสม */
+    }
+     .display-area p,
+     .controls button,
+     #history-log,
+     #status-message {
+         font-size: 0.9em; /* ลด font สำหรับจอเล็กสุด */
+     }
+}

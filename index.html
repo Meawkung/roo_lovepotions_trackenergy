@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Potion - Enemy Energy Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="tracker">
+        <h2>Enemy Energy Tracker</h2>
+
+        <div class="display-area">
+            <p>Round: <span id="current-round">1</span></p>
+            <p>Estimated Opponent Energy: <span id="opponent-energy">2</span></p>
+            <!-- <p>Estimated Opponent HP: <span id="opponent-hp">7</span></p> -->
+        </div>
+
+        <hr>
+
+        <div id="status-message">เลือกการ์ดที่ศัตรูเล่นในรอบที่ 1</div>
+
+        <div class="card-selection" id="card-selector">
+            <!-- ใส่ path รูปภาพของคุณใน src="..." -->
+            <button data-card="First Love" data-cost="1">
+                <img src="img/first_love.png" alt="First Love">
+            </button>
+            <button data-card="Deep Love" data-cost="2">
+                <img src="img/deep_love.png" alt="Deep Love">
+            </button>
+            <button data-card="Cold Wall" data-cost="1">
+                <img src="img/cold_wall.png" alt="Cold Wall">
+            </button>
+            <button data-card="Iron Wall" data-cost="1">
+                <img src="img/iron_wall.png" alt="Iron Wall">
+            </button>
+            <button data-card="Magic Boost" data-cost="0" data-gain="1">
+                <img src="img/magic_boost.png" alt="Magic Boost">
+            </button>
+       </div>
+
+        <div class="controls">
+            <button id="next-round-button" disabled>ยืนยัน / รอบถัดไป</button>
+            <button id="reset-button">รีเซ็ตเกม</button>
+        </div>
+
+        <hr> <!-- เพิ่มเส้นคั่นเพื่อความชัดเจน -->
+
+        <div class="history-area">
+            <h3>ประวัติการเล่น (การคาดการณ์)</h3>
+            <ul id="history-log">
+                <!-- รายการประวัติจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="love-potion-tracker.js"></script> <!-- ใส่ script reference ที่นี่ -->
+
+</body>
+</html>
