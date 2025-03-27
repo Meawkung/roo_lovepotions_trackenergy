@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentRound === 3 || currentRound === 6 || currentRound === 9) {
             availableEnergyForThisRound += 1;
         }
+        energyDisplay.textContent = availableEnergyForThisRound;
         cardButtons.forEach(button => {
             const cardCost = parseInt(button.dataset.cost) || 0;
             const isMagicBoost = button.dataset.card === 'Magic Boost';
