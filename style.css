@@ -62,6 +62,10 @@ hr { /* Horizontal lines within tracker */
 }
 
 /* Display Area */
+.display-area { /* อาจจะต้องเพิ่ม padding หรือปรับ margin ถ้า layout ชนกัน */
+    padding-bottom: 10px;
+}
+
 .display-area p {
     margin: 10px 0;
     font-size: 1.2em;

@@ -17,5 +17,16 @@ export const defaultGlobalPlayCounts = {
 export const defaultConditionalCounts = {}; // { 'energyLevel': { 'CardName': count } }
 export const defaultEnergyOccurrences = {}; // { 'energyLevel': count }
 
-// Card Names (อาจมีประโยชน์ถ้าใช้หลายที่)
+// Card Names
 export const cardNames = Object.keys(defaultGlobalPlayCounts);
+
+// Game Rules
+export const STARTING_HP = 7;
+
+export const cardDamage = {
+    'First Love': 1,
+    'Deep Love': 3,
+    'Cold Wall': 0,     // Walls deal no damage
+    'Iron Wall': 0,     // Iron Wall deflects, doesn't inherently deal damage here
+    'Magic Boost': 0,
+};

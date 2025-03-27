@@ -1,4 +1,5 @@
 // js/logic.js
+import { cardDamage } from './config.js'; // Import damage config
 
 /**
  * Calculates the energy available at the start of a given round, including bonus.
@@ -22,7 +23,7 @@ export function getAvailableEnergyForRound(round, energyAtStartOfRound) {
  * @returns {number|null} Remaining energy, or null if play is invalid (insufficient energy).
  */
 export function calculateEnergyAfterPlay(energyAvailable, cardData) {
-    if (!cardData) return energyAvailable; // Should not happen if selected properly
+    if (!cardData) return energyAvailable;
 
     if (cardData.name === 'Magic Boost') {
         return energyAvailable + cardData.gain;
@@ -33,4 +34,14 @@ export function calculateEnergyAfterPlay(energyAvailable, cardData) {
         }
         return energyAvailable - cardData.cost;
     }
+}
+
+/**
+ * Determines the damage the player takes based on the opponent's assumed card.
+ * @param {string} enemyCardName - The name of the card the opponent is assumed to have played.
+ * @returns {number} The amount of damage taken.
+ */
+export function calculateDamageTaken(enemyCardName) {
+    // Return damage value from config, default to 0 if card not found
+    return cardDamage[enemyCardName] || 0;
 }

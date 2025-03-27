@@ -6,6 +6,8 @@ let currentRound = 1;
 let opponentEnergy = 2;
 let selectedCardData = null;
 let gameHistory = []; // Current game history
+let playerHP = config.STARTING_HP; // Player HP
+let isGameOver = false; // Game Over status
 
 // Persistent stats - initialized by storage module
 let globalPlayCounts = {};
@@ -13,12 +15,14 @@ let globalTotalPlays = 0;
 let conditionalPlayCounts = {};
 let energyOccurrences = {};
 
-// --- Getters (ให้เข้าถึง state จากภายนอก) ---
+// --- Getters ---
 export const getGameState = () => ({
     currentRound,
     opponentEnergy,
     selectedCardData,
     gameHistory,
+    playerHP,      // Expose playerHP
+    isGameOver,    // Expose isGameOver
 });
 
 export const getStatsState = () => ({
@@ -28,12 +32,14 @@ export const getStatsState = () => ({
     energyOccurrences,
 });
 
-// --- Setters/Updaters (ให้เปลี่ยนแปลง state จากภายนอก) ---
+// --- Setters/Updaters ---
 export const setRound = (round) => { currentRound = round; };
 export const nextRound = () => { currentRound++; };
-export const setOpponentEnergy = (energy) => { opponentEnergy = Math.max(0, energy); }; // Ensure non-negative
+export const setOpponentEnergy = (energy) => { opponentEnergy = Math.max(0, energy); };
 export const setSelectedCard = (data) => { selectedCardData = data; };
 export const addHistoryEntry = (entry) => { gameHistory.push(entry); };
+export const setPlayerHP = (hp) => { playerHP = Math.max(0, hp); }; // Update player HP, ensure non-negative
+export const setGameOver = (status) => { isGameOver = status; }; // Update game over status
 
 // Functions to initialize/update stats (called by storage or main logic)
 export const setLoadedStats = (stats) => {
@@ -48,6 +54,8 @@ export const resetCurrentGameState = () => {
     opponentEnergy = 2;
     selectedCardData = null;
     gameHistory = [];
+    playerHP = config.STARTING_HP; // Reset HP on new game
+    isGameOver = false;         // Reset Game Over status
 };
 
 // Function to update stats after a play
