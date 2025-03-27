@@ -8,66 +8,65 @@
 </head>
 <body>
 
-    <div class="tracker">
-        <h2>Enemy Energy Tracker</h2>
+    <!-- **** Container หลักสำหรับ Layout สองคอลัมน์ **** -->
+    <div class="main-layout">
 
-        <div class="display-area">
-            <p>Round: <span id="current-round">1</span></p>
-            <p>Estimated Opponent Energy: <span id="opponent-energy">2</span></p>
-            <!-- <p>Estimated Opponent HP: <span id="opponent-hp">7</span></p> -->
+        <!-- **** คอลัมน์ซ้าย: Tracker หลัก **** -->
+        <div class="tracker-column">
+            <div class="tracker"> <!-- ใช้ class เดิมสำหรับสไตล์บางส่วนได้ -->
+                <h2>Enemy Energy Tracker</h2>
+
+                <div class="display-area">
+                    <p>Round: <span id="current-round">1</span></p>
+                    <p>Estimated Opponent Energy: <span id="opponent-energy">2</span></p>
+                </div>
+
+                <hr>
+
+                <div id="status-message">เลือกการ์ดที่ศัตรูเล่นในรอบที่ 1</div>
+
+                <div class="card-selection" id="card-selector">
+                     <!-- Buttons with images -->
+                     <button data-card="First Love" data-cost="1"><img src="img/first_love.png" alt="First Love"></button>
+                     <button data-card="Deep Love" data-cost="2"><img src="img/deep_love.png" alt="Deep Love"></button>
+                     <button data-card="Cold Wall" data-cost="1"><img src="img/cold_wall.png" alt="Cold Wall"></button>
+                     <button data-card="Iron Wall" data-cost="1"><img src="img/iron_wall.png" alt="Iron Wall"></button>
+                     <button data-card="Magic Boost" data-cost="0" data-gain="1"><img src="img/magic_boost.png" alt="Magic Boost"></button>
+                </div>
+
+                <div class="controls">
+                    <button id="next-round-button" disabled>ยืนยัน / รอบถัดไป</button>
+                    <button id="reset-button">รีเซ็ตเกม</button>
+                </div>
+            </div>
         </div>
+        <!-- **** จบคอลัมน์ซ้าย **** -->
 
-        <hr>
 
-        <div id="status-message">เลือกการ์ดที่ศัตรูเล่นในรอบที่ 1</div>
+        <!-- **** คอลัมน์ขวา: ข้อมูลเสริม **** -->
+        <div class="info-column">
+            <div class="history-area">
+                <h3>ประวัติการเล่น (เกมปัจจุบัน)</h3>
+                <ul id="history-log"></ul>
+            </div>
 
-        <div class="card-selection" id="card-selector">
-            <!-- ใส่ path รูปภาพของคุณใน src="..." -->
-            <button data-card="First Love" data-cost="1">
-                <img src="img/first_love.png" alt="First Love">
-            </button>
-            <button data-card="Deep Love" data-cost="2">
-                <img src="img/deep_love.png" alt="Deep Love">
-            </button>
-            <button data-card="Cold Wall" data-cost="1">
-                <img src="img/cold_wall.png" alt="Cold Wall">
-            </button>
-            <button data-card="Iron Wall" data-cost="1">
-                <img src="img/iron_wall.png" alt="Iron Wall">
-            </button>
-            <button data-card="Magic Boost" data-cost="0" data-gain="1">
-                <img src="img/magic_boost.png" alt="Magic Boost">
-            </button>
-       </div>
+            <hr>
 
-        <div class="controls">
-            <button id="next-round-button" disabled>ยืนยัน / รอบถัดไป</button>
-            <button id="reset-button">รีเซ็ตเกม</button>
+            <div class="probability-area">
+                 <h3>โอกาสเล่นครั้งถัดไป (สถิติรวม)</h3>
+                 <div id="probability-display"></div>
+                 <div class="controls">
+                    <button id="clear-stats-button">เคลียร์สถิติ</button>
+                 </div>
+            </div>
         </div>
-
-        <hr> <!-- เพิ่มเส้นคั่นเพื่อความชัดเจน -->
-
-        <div class="history-area">
-            <h3>ประวัติการเล่น (การคาดการณ์)</h3>
-            <ul id="history-log">
-                <!-- รายการประวัติจะถูกเพิ่มที่นี่ด้วย JavaScript -->
-            </ul>
-        </div>
-
-         <!-- **** เพิ่มส่วนแสดงผล Probability **** -->
-         <hr>
-         <div class="probability-area">
-              <h3>โอกาสเล่นครั้งถัดไป (ตามสถิติ)</h3>
-              <div id="probability-display">
-                  <!-- Probability data will be loaded here by JS -->
-              </div>
-         </div>
-         <!-- ********************************** -->
- 
+        <!-- **** จบคอลัมน์ขวา **** -->
 
     </div>
+    <!-- **** จบ Container หลัก **** -->
 
-    <script src="love-potion-tracker.js"></script> <!-- ใส่ script reference ที่นี่ -->
+
+    <script src="love-potion-tracker.js"></script>
 
 </body>
 </html>

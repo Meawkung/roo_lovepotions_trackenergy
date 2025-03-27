@@ -1,311 +1,288 @@
+/* --- style.css --- */
+
 /* --- General Styles --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px;
     background-color: #f4f4f4;
     color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
     min-height: 100vh;
-    flex-direction: column;
-    align-items: center;
+    margin: 0; /* Reset default margin */
 }
 
-/* --- Tracker Container --- */
+/* --- Main Layout Container --- */
+.main-layout {
+    display: flex; /* Enable Flexbox for Desktop */
+    justify-content: center; /* Center the layout horizontally */
+    gap: 25px; /* Space between columns */
+    max-width: 1100px; /* Adjust overall max width as needed */
+    margin: 20px auto; /* Center the container */
+    align-items: flex-start; /* Align tops of columns */
+}
+
+/* --- Column Styles --- */
+.tracker-column {
+    flex: 2; /* Make tracker column wider (e.g., 2 parts) */
+    min-width: 320px; /* Minimum width */
+    max-width: 600px; /* Optional: max width for tracker itself */
+}
+
+.info-column {
+    flex: 1; /* Make info column narrower (1 part) */
+    min-width: 260px; /* Minimum width */
+    /* Optional: Make it sticky */
+    /* position: sticky; */
+    /* top: 20px; */
+}
+
+/* --- Tracker Container (inside tracker-column) --- */
 .tracker {
     border: 1px solid #ccc;
     padding: 20px;
-    width: 100%;
-    /* เพิ่ม max-width สำหรับ Desktop เพื่อรองรับปุ่มที่ใหญ่ขึ้น */
-    max-width: 550px; /* << ปรับค่านี้ตามความเหมาะสม */
-    margin: 20px auto;
+    width: 100%; /* Full width of its column */
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     box-sizing: border-box;
 }
 
-h2,
-h3 {
+/* Headings within tracker */
+.tracker h2 {
     color: #5a2a88;
     border-bottom: 1px solid #eee;
     padding-bottom: 5px;
     margin-top: 0;
-    text-align: center; /* จัดกลางหัวข้อ */
+    text-align: center;
 }
 
-hr {
+hr { /* Horizontal lines within tracker */
     border: 0;
     border-top: 1px solid #eee;
     margin: 20px 0;
 }
 
-/* --- Display Area --- */
+/* Display Area */
 .display-area p {
     margin: 8px 0;
     font-size: 1.1em;
+    text-align: center; /* Center round/energy */
 }
-
 .display-area span {
     font-weight: bold;
     color: #d63384;
-    /* Highlight color for values */
 }
 
-/* --- Status Message --- */
+/* Status Message */
 #status-message {
     margin-top: 15px;
     margin-bottom: 15px;
     font-style: italic;
     color: #666;
     min-height: 1.5em;
-    /* Reserve space */
     background-color: #e9ecef;
-    /* Light background */
     padding: 8px;
     border-radius: 4px;
     text-align: center;
 }
 
-/* --- Card Selection Area --- */
+/* Card Selection */
 .card-selection {
     display: flex;
     flex-wrap: wrap;
-    /* อาจจะเพิ่ม gap เล็กน้อยถ้าปุ่มใหญ่ขึ้น */
-    gap: 12px; /* << ปรับค่านี้ตามความเหมาะสม */
+    gap: 12px; /* Adjust gap as needed */
     justify-content: center;
 }
-
 .card-selection button {
-    padding: 5px; /* padding อาจจะเท่าเดิม */
+    padding: 5px;
     cursor: pointer;
     border: 2px solid #ccc;
     border-radius: 5px;
     background-color: #f8f9fa;
-    transition: background-color 0.2s, border-color 0.2s;
-    /* **** ขนาดเริ่มต้นที่ใหญ่ขึ้นสำหรับ Desktop **** */
-    width: 100px;  /* << ปรับความกว้างตามต้องการ */
-    height: 140px; /* << ปรับความสูงตามต้องการ */
-    /* ****************************************** */
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    /* Larger size from previous adjustment */
+    width: 100px;
+    height: 140px;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     overflow: hidden;
 }
-
-/* --- ใหม่: จัดการรูปภาพภายในปุ่ม --- */
 .card-selection button img {
     display: block;
     max-width: 100%;
     max-height: 100%;
     height: auto;
     object-fit: contain;
-    pointer-events: none;
+    pointer-events: none; /* Crucial for clicking the button */
 }
-
 .card-selection button:hover:not(:disabled) {
     background-color: #e2e6ea;
     border-color: #aaa;
 }
-
 .card-selection button.selected {
     border-color: #5a2a88;
     background-color: #e0d0f0;
-    box-shadow: 0 0 5px #5a2a88;
+    box-shadow: 0 0 8px rgba(90, 42, 136, 0.5); /* Enhanced selected glow */
 }
-
 .card-selection button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
     background-color: #eee;
     border-color: #ddd;
+    box-shadow: none; /* Remove shadow when disabled */
 }
 
-
-/* --- Controls Area --- */
+/* Controls Area */
 .controls {
     text-align: center;
-    /* Center buttons */
     margin-top: 20px;
 }
-
 .controls button {
     padding: 10px 20px;
-    margin: 5px; /* ปรับ margin ให้รองรับการขึ้นบรรทัดใหม่ */
+    margin: 5px;
     cursor: pointer;
     border: none;
     border-radius: 5px;
     font-size: 1em;
     transition: background-color 0.2s;
+    min-width: 120px; /* Ensure buttons have min width */
+}
+#next-round-button { background-color: #5a2a88; color: white; }
+#next-round-button:disabled { background-color: #a893bd; cursor: not-allowed; }
+#next-round-button:hover:not(:disabled) { background-color: #48226b; }
+#reset-button { background-color: #6c757d; color: white; }
+#reset-button:hover { background-color: #5a6268; }
+/* Optional Clear Stats Button Style */
+#clear-stats-button { background-color: #dc3545; color: white; }
+#clear-stats-button:hover { background-color: #c82333; }
+
+
+/* --- Info Column Sections --- */
+.history-area, .probability-area {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 20px; /* Space between sections */
+    width: 100%; /* Take full width of info-column */
+    box-sizing: border-box;
+}
+.info-column hr { display: none; } /* Hide hr within info-column */
+
+/* Headings within info-column */
+.info-column h3 {
+    color: #5a2a88;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.1em;
 }
 
-#next-round-button {
-    background-color: #5a2a88;
-    /* Theme color */
-    color: white;
-}
-
-#next-round-button:disabled {
-    background-color: #a893bd;
-    cursor: not-allowed;
-}
-
-#next-round-button:hover:not(:disabled) {
-    background-color: #48226b;
-}
-
-#reset-button {
-    background-color: #6c757d;
-    /* Secondary color */
-    color: white;
-}
-
-#reset-button:hover {
-    background-color: #5a6268;
-}
-
-
-/* --- History Area --- */
-.history-area {
-    margin-top: 20px;
-}
-
+/* History Log */
 #history-log {
     list-style-type: none;
-    /* Remove bullet points */
     padding-left: 0;
-    /* Remove default padding */
-    max-height: 150px;
-    /* Limit height */
+    max-height: 200px; /* Adjust height */
     overflow-y: auto;
-    /* Add scrollbar if needed */
     border: 1px solid #eee;
     border-radius: 4px;
     padding: 10px;
     background-color: #f8f9fa;
     font-size: 0.9em;
-    /* Slightly smaller font */
 }
+#history-log li { margin-bottom: 5px; padding-bottom: 5px; border-bottom: 1px dotted #ddd; }
+#history-log li:last-child { border-bottom: none; }
 
-#history-log li {
-    margin-bottom: 5px;
-    /* Space between entries */
-    padding-bottom: 5px;
-    border-bottom: 1px dotted #ddd;
-    /* Separator line */
-}
-
-#history-log li:last-child {
-    border-bottom: none;
-    /* No line for the last item */
-}
-
-/* --- **** เพิ่มสไตล์ Probability Area **** --- */
-.probability-area {
-    margin-top: 20px;
-}
-
+/* Probability Display */
 #probability-display ul {
     list-style-type: none;
     padding-left: 0;
     margin-top: 5px;
 }
-
 #probability-display li {
     margin-bottom: 4px;
-    font-size: 0.95em; /* ปรับขนาดตามต้องการ */
-    color: #333; /* สีตัวอักษร */
+    font-size: 0.95em;
+    color: #333;
 }
-
-#probability-display p { /* สไตล์สำหรับข้อความ "ยังไม่มีข้อมูล" */
+#probability-display p { /* Style for "No data" message */
     font-style: italic;
     color: #666;
     text-align: center;
+    margin-top: 10px;
 }
-/* --- ********************************** --- */
+
 
 /* --- Responsive Styles --- */
 
-/* Medium screens (Tablets) */
-@media (max-width: 768px) {
-    .tracker {
-        max-width: 90%; /* ทำให้กว้างขึ้นบน Tablet */
+/* Tablets and Smaller */
+@media (max-width: 850px) { /* Breakpoint where columns stack */
+    .main-layout {
+        flex-direction: column; /* Stack columns vertically */
+        align-items: center; /* Center items when stacked */
+        gap: 20px;
+        max-width: 600px; /* Adjust max width for single column layout */
+        padding: 0 15px; /* Add horizontal padding for smaller viewports */
     }
 
-    .card-selection {
-        gap: 10px; /* ลด gap ลงเล็กน้อย */
+    .tracker-column, .info-column {
+        flex: none; /* Disable flex ratios */
+        width: 100%; /* Make each column take full width */
+        max-width: 100%; /* Allow full width within the centered main-layout */
+        /* position: static; Remove sticky if it was used */
     }
 
-    .card-selection button {
-        /* ขนาดสำหรับ Tablet (ใหญ่กว่าเดิม) */
-        width: 90px;   /* << ปรับตามความเหมาะสม */
-        height: 125px; /* << ปรับตามความเหมาะสม */
-    }
+     /* Adjust card size for tablets */
+     .card-selection button {
+         width: 90px;
+         height: 125px;
+     }
 }
 
-
-/* Small screens (Phones) */
+/* Small phones */
 @media (max-width: 600px) {
-    body {
-        padding: 10px;
-    }
+     body { padding: 10px; } /* Reduce body padding */
+     .main-layout { gap: 15px; padding: 0 10px; } /* Reduce gap and padding */
 
-    .tracker {
-        max-width: 95%;
-        padding: 15px;
-        margin: 10px auto;
-    }
+     .tracker, .history-area, .probability-area { padding: 15px; } /* Reduce internal padding */
 
-     /* Font size อาจจะคงเดิมหรือปรับเล็กน้อย */
-     .display-area p,
-     .controls button,
-     #history-log,
-     #status-message {
-         font-size: 1em; /* ลองปรับกลับเป็น 1em หรือ 0.95em */
+     .card-selection { gap: 8px; }
+     .card-selection button {
+         /* Adjust card size for phones */
+         width: 75px;
+         height: 105px;
      }
-
-    .card-selection {
-        gap: 8px;
-    }
-
-    .card-selection button {
-        /* ขนาดสำหรับ Mobile (ใหญ่กว่าเดิม) */
-        width: 75px;  /* << ปรับตามความเหมาะสม */
-        height: 105px; /* << ปรับตามความเหมาะสม */
-        padding: 3px;
-    }
-
-    .controls {
+     .controls { /* Stack control buttons vertically */
          display: flex;
          flex-direction: column;
          align-items: center;
          gap: 10px;
-    }
-    .controls button {
-        width: 70%;
-        max-width: 220px; /* เพิ่ม max-width ปุ่มควบคุม */
-        margin: 0;
-        font-size: 1em; /* ทำให้ font ปุ่มใหญ่ขึ้นบน mobile */
-    }
+     }
+     .controls button {
+         width: 80%; /* Make buttons wider */
+         max-width: 240px; /* Limit button width */
+         margin: 0;
+         font-size: 1em;
+     }
 
-    #history-log {
-        max-height: 120px; /* อาจจะเพิ่มความสูง history เล็กน้อย */
-    }
+     #history-log { max-height: 150px; } /* Adjust history height */
+     #probability-display li, #history-log { font-size: 0.9em; } /* Slightly smaller fonts */
+     .info-column h3 { font-size: 1em; }
 }
 
-/* Extra small screens (Optional) */
-@media (max-width: 380px) { /* ปรับ breakpoint เล็กน้อย */
+/* Extra small screens */
+@media (max-width: 380px) {
+    .card-selection { gap: 6px; }
     .card-selection button {
-         /* ขนาดสำหรับจอเล็กมากๆ (ใหญ่กว่าเดิม) */
-        width: 65px;   /* << ปรับตามความเหมาะสม */
-        height: 90px;  /* << ปรับตามความเหมาะสม */
+        /* Further reduce card size */
+        width: 65px;
+        height: 90px;
     }
-     .display-area p,
-     .controls button,
-     #history-log,
-     #status-message {
-         font-size: 0.9em; /* ลด font สำหรับจอเล็กสุด */
-     }
+    .controls button { width: 90%; }
+    /* Reduce font sizes further if needed */
+    .display-area p, #status-message, .controls button, #history-log, #probability-display li {
+        font-size: 0.85em;
+    }
+     .info-column h3 { font-size: 0.95em; }
 }
