@@ -17,8 +17,14 @@
                 <h2>Enemy Energy Tracker</h2>
 
                 <div class="display-area">
+                    <div class="hp-display">
+                        <span class="hp-label">Player HP:</span>
+                        <div class="hp-bar-wrapper"> <!-- ตัวหุ้มสำหรับ Bar และ Value -->
+                            <div class="hp-bar-fill" id="player-hp-bar"></div> <!-- ส่วนที่เติม Bar (สีเขียว/เหลือง/แดง) -->
+                            <span class="hp-value" id="player-hp">7</span> <!-- ตัวเลข HP -->
+                        </div>
+                    </div>
                     <p>Round: <span id="current-round">1</span></p>
-                    <p>Player HP: <span id="player-hp">7</span></p>
                     <p>Opponent Energy: <span id="opponent-energy">2</span></p> <!-- เปลี่ยนข้อความเล็กน้อย -->
                 </div>
 

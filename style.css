@@ -65,26 +65,83 @@ hr { /* Horizontal lines within tracker */
 .display-area { /* อาจจะต้องเพิ่ม padding หรือปรับ margin ถ้า layout ชนกัน */
     padding-bottom: 10px;
 }
-
-.display-area p {
+.display-area p { /* สไตล์สำหรับ Round และ Opponent Energy */
     margin: 10px 0;
-    font-size: 1.2em;
-    text-align: center; /* Center round/energy */
+    font-size: 1.1em;
+    text-align: center;
 }
-.display-area span {
+.display-area p span { /* สไตล์สำหรับตัวเลข Round และ Energy */
     font-weight: bold;
-    color: #c72c71; /* อาจจะปรับสีให้เข้มขึ้นเล็กน้อย */
-    font-size: 1.8em; /* << เพิ่มขนาด font ให้ใหญ่ขึ้นมาก */
-    padding: 2px 8px; /* เพิ่ม padding เล็กน้อย */
-    background-color: #f0f0f0; /* เพิ่มพื้นหลังสีเทาอ่อน */
-    border-radius: 5px; /* ทำให้มุมมน */
-    border: 1px solid #ddd; /* เพิ่มเส้นขอบบางๆ */
-    /* เพิ่มเงาเล็กน้อย */
+    color: #c72c71;
+    font-size: 1.6em; /* อาจจะลดขนาดลงเล็กน้อยจากเดิม */
+    padding: 2px 8px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-    /* จัดตำแหน่งแนวตั้งให้ดูดีขึ้น (ถ้า font ใหญ่มาก) */
     vertical-align: middle;
-    line-height: 1.2; /* ปรับ line-height */
+    line-height: 1.2;
 }
+
+/* --- **** NEW Health Bar Styles **** --- */
+.hp-display {
+    display: flex; /* จัด Label กับ Bar ให้อยู่บรรทัดเดียวกัน */
+    align-items: center; /* จัดให้อยู่กลางแนวตั้ง */
+    justify-content: center; /* จัดกลางแนวนอน (ถ้าต้องการ) */
+    margin: 15px 0; /* ระยะห่างบนล่าง */
+    gap: 8px; /* ช่องว่างระหว่าง Label กับ Bar */
+}
+
+.hp-label {
+    font-size: 1.1em;
+    white-space: nowrap; /* ไม่ให้ตัดคำ */
+}
+
+.hp-bar-wrapper {
+    position: relative; /* เป็น reference ให้ bar fill/bg */
+    flex-grow: 1; /* ให้กินพื้นที่ที่เหลือ */
+    max-width: 200px; /* กำหนดความกว้างสูงสุดของ Bar */
+    height: 28px; /* ความสูงของ Bar */
+    background-color: #e0e0e0; /* สีพื้นหลังสำรอง (เผื่อ background ไม่โหลด) */
+    border-radius: 14px; /* ทำให้มุมมนครึ่งวงกลม */
+    overflow: hidden; /* ซ่อนส่วนเกินของ fill */
+    border: 1px solid #c0c0c0; /* เส้นขอบบางๆ */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15); /* เงาด้านใน */
+}
+
+.hp-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #4CAF50; /* สีเขียวเริ่มต้น */
+    border-radius: 14px; /* ทำให้มุมมนเหมือนกัน */
+    width: 100%; /* เริ่มต้นเต็ม */
+    z-index: 1; /* อยู่บน background */
+    transition: width 0.4s ease-in-out, background-color 0.4s ease; /* ทำให้เปลี่ยนขนาด/สี สมูท */
+}
+
+/* สี Bar ตาม % HP (ปรับแก้ใน JS) */
+.hp-bar-fill.medium { background-color: #ffc107; } /* สีเหลือง */
+.hp-bar-fill.low { background-color: #f44336; } /* สีแดง */
+
+.hp-value {
+    position: absolute; /* ลอยอยู่เหนือ Bar */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* อยู่บนสุด */
+    display: flex; /* ใช้ flex จัดกลาง */
+    justify-content: center;
+    align-items: center;
+    color: white; /* สีตัวเลข */
+    font-size: 1.3em; /* ขนาดตัวเลข */
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* เงาให้ตัวเลขชัดขึ้น */
+    line-height: 28px; /* เท่ากับความสูง wrapper */
+}
+/* --- ***************************** --- */
 
 /* Status Message */
 #status-message {
@@ -338,6 +395,14 @@ hr { /* Horizontal lines within tracker */
 
     .conditional-probability-area h4 { font-size: 0.9em; }
      #conditional-probability-display li { font-size: 0.85em; }
+
+     .display-area p span { font-size: 1.4em; } /* ลดขนาด Round/Energy */
+
+     .hp-display { margin: 12px 0; gap: 6px; }
+     .hp-label { font-size: 1em; }
+     .hp-bar-wrapper { height: 24px; border-radius: 12px; max-width: 180px; }
+     .hp-bar-fill { border-radius: 12px; }
+     .hp-value { font-size: 0.8em; line-height: 24px; }
 }
 
 /* Extra small screens */
@@ -354,4 +419,8 @@ hr { /* Horizontal lines within tracker */
         font-size: 0.85em;
     }
      .info-column h3 { font-size: 0.95em; }
+
+     .hp-bar-wrapper { max-width: 150px; height: 20px; border-radius: 10px; }
+     .hp-bar-fill { border-radius: 10px; }
+     .hp-value { font-size: 0.75em; line-height: 20px; }
 }

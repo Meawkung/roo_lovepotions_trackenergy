@@ -1,9 +1,11 @@
 // js/ui.js
 import { cardNames } from './config.js'; // Import card names if needed
+import { STARTING_HP } from './config.js'; // <<<--- Import STARTING_HP
 
 // --- DOM Element References ---
 const roundDisplay = document.getElementById('current-round');
 const playerHPDisplay = document.getElementById('player-hp'); // Reference for Player HP
+const playerHPBar = document.getElementById('player-hp-bar'); // <<<--- Reference ใหม่สำหรับ Fill Bar
 const energyDisplay = document.getElementById('opponent-energy');
 const statusMessage = document.getElementById('status-message');
 const cardSelector = document.getElementById('card-selector');
@@ -17,7 +19,7 @@ const resetButton = document.getElementById('reset-button');
 const clearStatsButton = document.getElementById('clear-stats-button');
 
 // Basic check for essential elements (more robust)
-const essentialElements = { roundDisplay, playerHPDisplay, energyDisplay, statusMessage, cardSelector, cardButtons, nextRoundButton, historyLog, probabilityDisplay, conditionalProbDisplay, conditionalEnergyValue, resetButton };
+const essentialElements = { roundDisplay, playerHPDisplay, playerHPBar, energyDisplay, statusMessage, cardSelector, cardButtons, nextRoundButton, historyLog, probabilityDisplay, conditionalProbDisplay, conditionalEnergyValue, resetButton };
 for (const key in essentialElements) {
     if (!essentialElements[key]) {
         console.error(`Essential UI element "${key}" not found! Check your HTML IDs.`);
@@ -42,8 +44,30 @@ export function updateCardButtonStates(availableEnergy, isGameOver) {
 
 export function updateMainDisplay(round, energyAvailable, currentHP) {
     if (roundDisplay) roundDisplay.textContent = round;
-    if (playerHPDisplay) playerHPDisplay.textContent = currentHP; // Update Player HP
-    if (energyDisplay) energyDisplay.textContent = energyAvailable; // Opponent Energy available at start of round
+    if (energyDisplay) energyDisplay.textContent = energyAvailable;
+
+    // --- Update Player HP Display (Number and Bar) ---
+    if (playerHPDisplay) {
+        playerHPDisplay.textContent = currentHP;
+    }
+    if (playerHPBar) {
+        // Calculate percentage (handle division by zero)
+        const maxHP = STARTING_HP; // Use imported max HP
+        const hpPercent = maxHP > 0 ? Math.max(0, (currentHP / maxHP) * 100) : 0; // Ensure percent is not negative
+
+        // Update bar width
+        playerHPBar.style.width = hpPercent + '%';
+
+        // Update bar color based on percentage
+        playerHPBar.classList.remove('medium', 'low'); // Remove previous color classes
+        if (hpPercent <= 50) {
+            playerHPBar.classList.add('low');
+        } else if (hpPercent <= 60) {
+            playerHPBar.classList.add('medium');
+        }
+        // Default is green (no class needed if > 50%)
+    }
+    // --- ----------------------------------------- ---
 }
 
 export function updateHistoryDisplay(history) {
