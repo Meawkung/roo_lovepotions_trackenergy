@@ -37,11 +37,19 @@ export function calculateEnergyAfterPlay(energyAvailable, cardData) {
 }
 
 /**
- * Determines the damage the player takes based on the opponent's assumed card.
- * @param {string} enemyCardName - The name of the card the opponent is assumed to have played.
- * @returns {number} The amount of damage taken.
+ * Determines the damage the player takes based on the opponent's assumed card
+ * AND whether the player attacked when facing Iron Wall.
+ * @param {string} enemyCardName - The name of the card the opponent played.
+ * @param {boolean|null} playerAttackedAgainstIronWall - Did player attack? (true/false/null).
+ * @returns {number} The amount of damage taken by the player.
  */
-export function calculateDamageTaken(enemyCardName) {
-    // Return damage value from config, default to 0 if card not found
-    return cardDamage[enemyCardName] || 0;
+export function calculateDamageTaken(enemyCardName, playerAttackedAgainstIronWall) {
+    let damage = cardDamage[enemyCardName] || 0; // Base damage from enemy card
+
+    // Add Iron Wall deflection damage IF opponent used Iron Wall AND player confirmed they attacked
+    if (enemyCardName === 'Iron Wall' && playerAttackedAgainstIronWall === true) {
+        damage += 1; // Player takes 1 damage from deflection
+    }
+
+    return damage;
 }

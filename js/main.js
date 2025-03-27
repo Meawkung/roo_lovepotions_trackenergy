@@ -7,7 +7,7 @@ import { STARTING_HP } from './config.js'; // Import STARTING_HP if needed elsew
 
 // --- Initialization Function ---
 function initializeGame() {
-    state.resetCurrentGameState(); // Resets game state including HP and game over status
+    state.resetCurrentGameState(); // Resets game state including HP, game over, and attack status
 
     const gameState = state.getGameState();
     const statsState = state.getStatsState();
@@ -47,15 +47,38 @@ function handleCardSelection(event) {
             cost: parseInt(clickedElement.dataset.cost) || 0,
             gain: parseInt(clickedElement.dataset.gain) || 0
         };
-        state.setSelectedCard(cardData); // Update state with selected card
+        // Update state, this also resets playerAttacked status if not Iron Wall
+        state.setSelectedCard(cardData);
 
-        const currentRound = state.getGameState().currentRound;
-        ui.updateStatusMessage(`การ์ด '${cardData.name}' ถูกเลือกสำหรับรอบ ${currentRound}. กด 'ยืนยัน' เพื่อไปต่อ`);
-        ui.enableNextButton(true, false); // Enable next, game isn't over yet
+        let allowNext = true; // Assume we can proceed unless prompt is needed and cancelled (confirm() doesn't really cancel flow here)
+
+        // Ask about player attack only if Iron Wall is selected AND we haven't answered yet
+        if (cardData.name === 'Iron Wall' && state.didPlayerAttack() === null) {
+            // Using confirm() directly. User clicking Cancel means 'false'.
+            const didAttack = confirm("Iron Wall ถูกเลือก! คุณได้ใช้การ์ดโจมตีในรอบนี้หรือไม่?\n(OK = ใช่, Cancel = ไม่ใช่)");
+            state.setPlayerAttackStatus(didAttack); // Store the answer (true/false)
+            // No need to set allowNext = false with confirm() as it blocks execution
+        }
+
+        // Update status message based on selection and potential Iron Wall answer
+        if (cardData.name === 'Iron Wall') {
+             const attackStatusMsg = state.didPlayerAttack() ? "(คุณโจมตี)" : "(คุณไม่โจมตี)";
+             ui.updateStatusMessage(`การ์ด '${cardData.name}' ${attackStatusMsg} ถูกเลือก. กด 'ยืนยัน' เพื่อไปต่อ`);
+        } else {
+             const currentRound = state.getGameState().currentRound;
+             ui.updateStatusMessage(`การ์ด '${cardData.name}' ถูกเลือกสำหรับรอบ ${currentRound}. กด 'ยืนยัน' เพื่อไปต่อ`);
+        }
+
+        // Enable Next button (game isn't over yet)
+        ui.enableNextButton(true, false);
+
     } else if (clickedElement && clickedElement.disabled) {
-         ui.updateStatusMessage(`Energy ไม่พอที่จะเล่น '${clickedElement.dataset.card}' (ต้องการ ${clickedElement.dataset.cost})`);
+         // Display message if clicking a disabled button
+         const neededCost = clickedElement.dataset.cost;
+         ui.updateStatusMessage(`Energy ไม่พอที่จะเล่น '${clickedElement.dataset.card}' (ต้องการ ${neededCost})`);
     }
 }
+
 
 function handleNextRound() {
     // Prevent action if game is over
@@ -70,41 +93,55 @@ function handleNextRound() {
         return;
     }
 
+    // Re-check if Iron Wall requires an answer that wasn't given
+    // (Shouldn't happen with confirm(), but good as a safeguard)
+    if (gameState.selectedCardData.name === 'Iron Wall' && state.didPlayerAttack() === null) {
+         ui.updateStatusMessage("ข้อผิดพลาด: ไม่ได้ระบุว่าโจมตี Iron Wall หรือไม่ กรุณาเลือกการ์ดใหม่");
+         state.setSelectedCard(null); // Force re-selection
+         ui.clearCardSelection();
+         ui.enableNextButton(false, false);
+         return;
+    }
+
     // --- Calculations for the round being processed ---
     const energyAvailableThisRound = logic.getAvailableEnergyForRound(gameState.currentRound, gameState.opponentEnergy);
     const energyKey = energyAvailableThisRound.toString();
     const energyAfterEffect = logic.calculateEnergyAfterPlay(energyAvailableThisRound, gameState.selectedCardData);
 
     if (energyAfterEffect === null) {
-        ui.updateStatusMessage("เกิดข้อผิดพลาด: พลังงานไม่พอ!"); // Should be rare
+        // This case implies insufficient energy, though button disable should prevent it.
+        ui.updateStatusMessage("เกิดข้อผิดพลาด: พลังงานไม่พอ!");
         return;
     }
     const finalEnergyAfterEffect = Math.max(0, energyAfterEffect);
 
-    // --- Calculate Player Damage and Update HP ---
-    const damageTaken = logic.calculateDamageTaken(gameState.selectedCardData.name);
+    // --- Calculate Player Damage (Pass player attack status for Iron Wall) ---
+    const damageTaken = logic.calculateDamageTaken(
+        gameState.selectedCardData.name,
+        state.didPlayerAttack() // Pass the stored true/false/null status
+    );
     const newPlayerHP = gameState.playerHP - damageTaken;
     state.setPlayerHP(newPlayerHP); // Update HP in state
 
-    // --- Record History & Stats (Before checking game over for this action) ---
+    // --- Record History & Stats (Based on energy *before* play) ---
     const historyEntry = {
         round: gameState.currentRound,
         cardPlayed: gameState.selectedCardData.name,
-        energyAfterRound: finalEnergyAfterEffect // Energy opponent will have next round
+        energyAfterRound: finalEnergyAfterEffect // Opponent energy for next round
     };
     state.addHistoryEntry(historyEntry);
-    state.recordPlay(gameState.selectedCardData.name, energyKey); // Record stats based on energy *before* play
+    state.recordPlay(gameState.selectedCardData.name, energyKey);
 
     // --- Save Stats ---
     if (!storage.savePersistentStats(state.getStatsState())) {
         ui.updateStatusMessage("ข้อผิดพลาด: ไม่สามารถบันทึกสถิติได้!");
-        // Decide whether to proceed or stop
+        // Consider whether to halt execution or just warn
     }
 
     // --- Update State for the *Next* Round ---
-    state.setOpponentEnergy(finalEnergyAfterEffect); // Set opponent's energy for the start of next round
+    state.setOpponentEnergy(finalEnergyAfterEffect); // Set energy for the start of the next round
     state.nextRound(); // Increment round number
-    state.setSelectedCard(null); // Clear selection for next round
+    state.setSelectedCard(null); // Clear selection (this also resets Iron Wall attack status via its setter)
 
     // --- Check for Game Over ---
     let gameJustEnded = false;
@@ -114,19 +151,23 @@ function handleNextRound() {
     }
 
     // --- Update UI based on new state (next round or game over) ---
-    const newGameState = state.getGameState(); // Get state again, includes updated HP and possibly isGameOver
+    const newGameState = state.getGameState(); // Get state again (includes updated HP, round, game over status)
     const statsState = state.getStatsState();
     // Calculate energy available for the *start* of the now current (next) round
     const nextEnergyAvailable = logic.getAvailableEnergyForRound(newGameState.currentRound, newGameState.opponentEnergy);
 
-    ui.updateMainDisplay(newGameState.currentRound, nextEnergyAvailable, newGameState.playerHP); // Show updated round, energy, HP
+    // Update main display with new round, energy, HP
+    ui.updateMainDisplay(newGameState.currentRound, nextEnergyAvailable, newGameState.playerHP);
     ui.updateHistoryDisplay(newGameState.gameHistory);
-    ui.updateCardButtonStates(nextEnergyAvailable, newGameState.isGameOver); // Update buttons based on new energy/game over state
+    // Update buttons based on new energy and game over status
+    ui.updateCardButtonStates(nextEnergyAvailable, newGameState.isGameOver);
     ui.updateGlobalProbabilityDisplay(statsState);
-    ui.updateConditionalProbabilityDisplay(nextEnergyAvailable, statsState); // Update conditional stats for the new round's energy
+    // Update conditional stats for the new round's starting energy
+    ui.updateConditionalProbabilityDisplay(nextEnergyAvailable, statsState);
 
     ui.clearCardSelection();
-    ui.enableNextButton(false, newGameState.isGameOver); // Disable next button, considering game over
+    // Disable next button, respecting game over status
+    ui.enableNextButton(false, newGameState.isGameOver);
 
     // Final status message
     if (gameJustEnded) {
@@ -142,6 +183,10 @@ function handleResetGame() {
 }
 
 function handleClearStats() {
+     // Check if the clearStatsButton exists before adding listener logic
+     const clearButton = ui.getClearStatsButton();
+     if (!clearButton) return; // Exit if button not found
+
      if (confirm("คุณต้องการล้างสถิติการเล่น *ทั้งหมด* (รวมและตามเงื่อนไข) หรือไม่? การดำเนินการนี้ไม่สามารถย้อนกลับได้")) {
         state.resetAllPersistentStats(); // Reset stats in state
         if (storage.savePersistentStats(state.getStatsState())) { // Save cleared state
@@ -156,6 +201,7 @@ function handleClearStats() {
         }
     }
 }
+
 
 // --- Main Execution ---
 document.addEventListener('DOMContentLoaded', () => {

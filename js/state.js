@@ -6,8 +6,9 @@ let currentRound = 1;
 let opponentEnergy = 2;
 let selectedCardData = null;
 let gameHistory = []; // Current game history
-let playerHP = config.STARTING_HP; // Player HP
-let isGameOver = false; // Game Over status
+let playerHP = config.STARTING_HP;
+let isGameOver = false;
+let playerAttackedAgainstIronWall = null; // null: not asked, true: yes, false: no
 
 // Persistent stats - initialized by storage module
 let globalPlayCounts = {};
@@ -21,9 +22,13 @@ export const getGameState = () => ({
     opponentEnergy,
     selectedCardData,
     gameHistory,
-    playerHP,      // Expose playerHP
-    isGameOver,    // Expose isGameOver
+    playerHP,
+    isGameOver,
+    // playerAttackedAgainstIronWall // No need to expose directly, use specific getter
 });
+
+// Specific getter for attack status when Iron Wall is relevant
+export const didPlayerAttack = () => playerAttackedAgainstIronWall;
 
 export const getStatsState = () => ({
     globalPlayCounts,
@@ -36,10 +41,25 @@ export const getStatsState = () => ({
 export const setRound = (round) => { currentRound = round; };
 export const nextRound = () => { currentRound++; };
 export const setOpponentEnergy = (energy) => { opponentEnergy = Math.max(0, energy); };
-export const setSelectedCard = (data) => { selectedCardData = data; };
+
+// When setting the selected card, also handle resetting the Iron Wall attack status
+export const setSelectedCard = (data) => {
+    selectedCardData = data;
+    // Reset attack status if the newly selected card is NOT Iron Wall
+    // This handles changing selection away from Iron Wall as well
+    if (data?.name !== 'Iron Wall') {
+        playerAttackedAgainstIronWall = null;
+    }
+};
+
+// Specific setter for the attack status
+export const setPlayerAttackStatus = (didAttack) => {
+    playerAttackedAgainstIronWall = didAttack;
+};
+
 export const addHistoryEntry = (entry) => { gameHistory.push(entry); };
-export const setPlayerHP = (hp) => { playerHP = Math.max(0, hp); }; // Update player HP, ensure non-negative
-export const setGameOver = (status) => { isGameOver = status; }; // Update game over status
+export const setPlayerHP = (hp) => { playerHP = Math.max(0, hp); };
+export const setGameOver = (status) => { isGameOver = status; };
 
 // Functions to initialize/update stats (called by storage or main logic)
 export const setLoadedStats = (stats) => {
@@ -54,8 +74,9 @@ export const resetCurrentGameState = () => {
     opponentEnergy = 2;
     selectedCardData = null;
     gameHistory = [];
-    playerHP = config.STARTING_HP; // Reset HP on new game
-    isGameOver = false;         // Reset Game Over status
+    playerHP = config.STARTING_HP;
+    isGameOver = false;
+    playerAttackedAgainstIronWall = null; // Reset on new game
 };
 
 // Function to update stats after a play
