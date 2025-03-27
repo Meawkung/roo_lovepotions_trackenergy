@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateCardButtonStates() {
         let availableEnergyForThisRound = opponentEnergy;
-        if (currentRound === 3 || currentRound === 6 || currentRound === 9) {
+        if (currentRound === 3 || currentRound === 6 || currentRound === 9 || currentRound === 12 || currentRound === 15) {
             availableEnergyForThisRound += 1;
         }
         energyDisplay.textContent = availableEnergyForThisRound;
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Calculate Energy ---
         let energyBeforeThisRoundEffect = opponentEnergy;
-        if (currentRound === 3 || currentRound === 6 || currentRound === 9) {
+        if (currentRound === 3 || currentRound === 6 || currentRound === 9 || currentRound === 12 || currentRound === 15) {
             energyBeforeThisRoundEffect += 1;
         }
         let energyAfterEffect;
